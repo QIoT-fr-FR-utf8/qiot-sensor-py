@@ -1,22 +1,37 @@
-from flask import Flask,jsonify,request,render_template
-import enviroplus
-
-from prometheus_client import start_http_server, Summary
 import random
 import time
+
+from flask import (Flask,
+                   Response)
+from prometheus_client import (generate_latest,
+                               CONTENT_TYPE_LATEST,
+                               Counter,
+                               Gauge,
+                               Summary)
+
+#import enviroplus
+
+app = Flask(__name__)
+
+PROM_METRICS = {
+    "counter": {
+        "my_counter": Counter('my_counter',
+                                 'Number Of counts',
+                                 ['count']),
+    }
+}
 
 # Create a metric to track time spent and requests made.
 REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
 
-# Decorate function with metric.
+@app.route('/')
+@app.route('/metrics')
 @REQUEST_TIME.time()
-def process_request(t):
-    """A dummy function that takes some time."""
-    time.sleep(t)
+def metrics():
+    """Flask endpoint to gather the metrics, will be called by Prometheus."""
+ # business counter
+    PROM_METRICS['counter']['my_counter'].labels('count').inc()
+    return Response(generate_latest(),
+                    mimetype=CONTENT_TYPE_LATEST)
 
-if __name__ == '__main__':
-    # Start up the server to expose the metrics.
-    start_http_server(8000)
-    # Generate some requests.
-    while True:
-        process_request(random.random())
+app.run(port=8000)
