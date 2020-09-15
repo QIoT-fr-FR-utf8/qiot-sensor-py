@@ -24,15 +24,12 @@ except ImportError:
 
 # Define metrics
 PROM_METRICS = {
-    "counter": {
-        "my_counter": Counter('my_counter',
-                                 'Number Of counts',
-                                 ['count'])
-    },
     "gauge": {
         "temperature": Gauge('bme280_temperature_degrees', 'Temperature of the BME280 sensor'),
         "compensated_temperature": Gauge('bme280_compensated_temperature_degrees', 'Temperature of the BME280 sensor, compensated'),
-        "cpu_temperature": Gauge('cpu_temperature_degrees', 'Temperature of the CPU')
+        "cpu_temperature": Gauge('cpu_temperature_degrees', 'Temperature of the CPU'),
+        "pressure": Gauge('bme280_pressure_hpa', 'Pressure of the BME280 sensor'),
+        "humidity": Gauge('bme280_humidity_percent', 'Humidity of the BME280 sensor')
     }
 }
 # Create a metric to track time spent and requests made.
@@ -44,10 +41,6 @@ def get_cpu_temperature():
         temp = f.read()
         temp = int(temp) / 1000.0
     return temp
-
-def get_temperature():
-    raw_temp = bme280.get_temperature()
-    return raw_temp
 
 def get_compensated_temperature():
     factor = 2.25
@@ -72,10 +65,11 @@ app = Flask(__name__)
 @REQUEST_TIME.time()
 def metrics():
     """Flask endpoint to gather the metrics, will be called by Prometheus."""
-    PROM_METRICS['counter']['my_counter'].labels('count').inc()
+    PROM_METRICS['gauge']['temperature'].set(bme280.get_temperature())
     PROM_METRICS['gauge']['cpu_temperature'].set(get_cpu_temperature())
-    PROM_METRICS['gauge']['temperature'].set(get_temperature())
     PROM_METRICS['gauge']['compensated_temperature'].set(get_compensated_temperature())
+    PROM_METRICS['gauge']['pressure'].set(bme280.get_pressure())
+    PROM_METRICS['gauge']['humidity'].set(bme280.get_humidity())
     return Response(generate_latest(),
                     mimetype=CONTENT_TYPE_LATEST)
 
