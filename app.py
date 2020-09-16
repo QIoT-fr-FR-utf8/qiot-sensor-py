@@ -45,10 +45,5 @@ def get_data_gas():
 
 if __name__=='__main__':
   #CHECK PORT
-  _port=0
-  if os.getenv('FLASK_PORT'):
-    _port=os.getenv('FLASK_PORT')
-  else:
-    _port=5000
 
-  app.run(host=os.getenv('FLASK_HOST'),port=_port,debug=os.getenv('FLASK_DEBUG'))
+  app.run(host=os.getenv('FLASK_APP_HOST'),port=os.getenv('FLASK_APP_PORT'),debug=os.getenv('FLASK_APP_DEBUG'))
