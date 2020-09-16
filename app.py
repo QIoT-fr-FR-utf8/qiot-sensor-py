@@ -3,9 +3,10 @@
 # Import basic libs
 import time
 import logging
+import os
 
 # Import flask for webservice and prometheus for metrics
-from flask import Flask,jsonify,Response
+from flask import Flask,jsonify,Response,request
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 # Import device libs
@@ -18,6 +19,8 @@ except ImportError:
 
 # Import applications libs
 from metrics import PROM_WEATHER_METRICS, REQUEST_TIME
+import gas_extend
+import particules_extend
 
 # Get the temperature of the CPU for compensation
 def get_cpu_temperature():
@@ -36,7 +39,6 @@ def get_compensated_temperature(raw_temp):
     comp_temp = raw_temp - ((avg_cpu_temp - raw_temp) / factor)
     logging.info("Compensated temperature: {:05.2f} *C".format(comp_temp))
     return comp_temp
-
 
 # Initialize bme280
 bus = SMBus(1)
@@ -65,6 +67,46 @@ def metrics():
     return Response(generate_latest(),
                     mimetype=CONTENT_TYPE_LATEST)
 
-if __name__ == '__main__':
-    # Just run the app!
-    app.run(port=8000,debug=True, host='0.0.0.0')
+@app.route('/')
+def index():
+  result = {}
+  result['result']="Hello QIoT"
+  return jsonify(result)
+
+
+@app.route('/api/sensors')
+def listsensor():
+  listofSensor=[]
+  listofSensor.append('/api/sensors/gas')
+  listofSensor.append('/api/sensors/pollution')
+
+  result={}
+  result={"result":listofSensor}
+
+  return jsonify(result)
+
+#get /api/gas
+# Message type
+# {
+#   "stationId":int,
+#   "instant":String*,
+#   "adc":double,
+#   "nh3":double,
+#   "oxidising":double,
+#   "reducing":double,
+# }
+
+@app.route('/api/sensors/gas', methods=['GET'])
+def get_data_gas():
+  result={}
+  result={"result":gas_extend.json_parsing_return()}
+  return jsonify(result)
+
+@app.route('/api/sensors/particules', methods=['GET'])
+def get_data_particules():
+  result={}
+  result={"result":particules_extend.json_parsing_return()}
+  return jsonify(result)
+
+if __name__=='__main__':
+  app.run(host=os.getenv('FLASK_APP_HOST'),port=os.getenv('FLASK_APP_PORT'),debug=os.getenv('FLASK_APP_DEBUG'))
