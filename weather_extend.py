@@ -19,7 +19,7 @@ def get_cpu_temperature():
     return temp
 
 def get_compensated_temperature(raw_temp):
-    factor = 2.25
+    factor = 1.3
     cpu_temps = [get_cpu_temperature()] * 5
     cpu_temp = get_cpu_temperature()
     # Smooth out with some averaging to decrease jitter
