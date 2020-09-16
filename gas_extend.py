@@ -4,14 +4,7 @@ from enviroplus import gas
 
 from prometheus_client import Gauge
 
-# Define metrics
-PROM_GAS_METRICS = {
-    "gauge" : {
-        "nh3": Gauge('gas_nh3', 'TBD'),
-        "oxidising": Gauge('gas_oxidising', 'TBD'),
-        "reducing": Gauge('gas_reducing', 'TBD')
-    }
-}
+from metrics import PROM_GAS_METRICS
 
 def r_float_value_adc():
     if isinstance(gas.readall().adc, float):

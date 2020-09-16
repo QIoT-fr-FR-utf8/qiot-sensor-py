@@ -14,5 +14,13 @@ PROM_WEATHER_METRICS = {
     }
 }
 
+PROM_GAS_METRICS = {
+    "gauge" : {
+        "nh3": Gauge('gas_nh3', 'TBD'),
+        "oxidising": Gauge('gas_oxidising', 'TBD'),
+        "reducing": Gauge('gas_reducing', 'TBD')
+    }
+}
+
 # Create a metric to track time spent and requests made.
 REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
