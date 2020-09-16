@@ -1,5 +1,6 @@
 from flask import Flask,jsonify,request
 from gas_extend import json_parsing_return
+from particules_extend import json_parsing_return
 import os
 
 app = Flask(__name__)
@@ -39,7 +40,11 @@ def get_data_gas():
   result={"result":gas_extend.json_parsing_return()}
   return jsonify(result)
 
-if __name__=='__main__':
-  #CHECK PORT
+@app.route('/api/sensors/particules', methods=['GET'])
+def get_data_gas():
+  result={}
+  result={"result":particules_extend.json_parsing_return()}
+  return jsonify(result)
 
+if __name__=='__main__':
   app.run(host=os.getenv('FLASK_APP_HOST'),port=os.getenv('FLASK_APP_PORT'),debug=os.getenv('FLASK_APP_DEBUG'))
