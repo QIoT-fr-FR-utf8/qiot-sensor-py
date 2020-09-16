@@ -1,6 +1,4 @@
 enviroplus
-# flask
 prometheus_client
-wheel
 fastapi
 uvicorn
