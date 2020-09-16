@@ -1,13 +1,13 @@
 from flask import Flask,jsonify,request
-from gas_extend import json_parsing_return
-from particules_extend import json_parsing_return
+import gas_extend
+import particules_extend
 import os
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-  result{}
+  result = {}
   result['result']="Hello QIoT"
   return jsonify(result)
 
@@ -41,7 +41,7 @@ def get_data_gas():
   return jsonify(result)
 
 @app.route('/api/sensors/particules', methods=['GET'])
-def get_data_gas():
+def get_data_particules():
   result={}
   result={"result":particules_extend.json_parsing_return()}
   return jsonify(result)
