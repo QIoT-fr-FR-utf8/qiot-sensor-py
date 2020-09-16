@@ -1,18 +1,12 @@
 #/usr/bin/env python3
 
 # Import basic libs
-import random
 import time
 import logging
 
 # Import flask for webservice and prometheus for metrics
-from flask import (Flask,
-                   Response)
-from prometheus_client import (generate_latest,
-                               CONTENT_TYPE_LATEST,
-                               Counter,
-                               Gauge,
-                               Summary)
+from flask import Flask,jsonify,Response
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 # Import device libs
 import enviroplus
@@ -22,18 +16,8 @@ try:
 except ImportError:
     from smbus import SMBus
 
-# Define metrics
-PROM_METRICS = {
-    "gauge": {
-        "temperature": Gauge('bme280_temperature_degrees', 'Temperature of the BME280 sensor'),
-        "compensated_temperature": Gauge('bme280_compensated_temperature_degrees', 'Temperature of the BME280 sensor, compensated'),
-        "cpu_temperature": Gauge('cpu_temperature_degrees', 'Temperature of the CPU'),
-        "pressure": Gauge('bme280_pressure_hpa', 'Pressure of the BME280 sensor'),
-        "humidity": Gauge('bme280_humidity_percent', 'Humidity of the BME280 sensor')
-    }
-}
-# Create a metric to track time spent and requests made.
-REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
+# Import applications libs
+from metrics import PROM_BM280_METRICS, REQUEST_TIME
 
 # Get the temperature of the CPU for compensation
 def get_cpu_temperature():
@@ -54,6 +38,7 @@ def get_compensated_temperature():
     logging.info("Compensated temperature: {:05.2f} *C".format(comp_temp))
     return comp_temp
 
+
 # Initialize bme280
 bus = SMBus(1)
 bme280 = BME280(i2c_dev=bus)
@@ -61,17 +46,23 @@ bme280 = BME280(i2c_dev=bus)
 # Create Flask application
 app = Flask(__name__)
 
-@app.route('/metrics')
+@app.route('/bm280')
 @REQUEST_TIME.time()
+def bm280_sensors():
+    PROM_BM280_METRICS['gauge']['temperature'].set(bme280.get_temperature())
+    PROM_BM280_METRICS['gauge']['cpu_temperature'].set(get_cpu_temperature())
+    PROM_BM280_METRICS['gauge']['compensated_temperature'].set(get_compensated_temperature())
+    PROM_BM280_METRICS['gauge']['pressure'].set(bme280.get_pressure())
+    PROM_BM280_METRICS['gauge']['humidity'].set(bme280.get_humidity())
+    result = { "result" : "OK" }
+    return jsonify(result)
+
+@app.route('/metrics')
 def metrics():
     """Flask endpoint to gather the metrics, will be called by Prometheus."""
-    PROM_METRICS['gauge']['temperature'].set(bme280.get_temperature())
-    PROM_METRICS['gauge']['cpu_temperature'].set(get_cpu_temperature())
-    PROM_METRICS['gauge']['compensated_temperature'].set(get_compensated_temperature())
-    PROM_METRICS['gauge']['pressure'].set(bme280.get_pressure())
-    PROM_METRICS['gauge']['humidity'].set(bme280.get_humidity())
     return Response(generate_latest(),
                     mimetype=CONTENT_TYPE_LATEST)
 
-# Just run the app!
-app.run(port=8000,debug=True, host='0.0.0.0')
+if __name__ == '__main__':
+    # Just run the app!
+    app.run(port=8000,debug=True, host='0.0.0.0')
