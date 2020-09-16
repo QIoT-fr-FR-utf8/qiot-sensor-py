@@ -17,7 +17,7 @@ except ImportError:
     from smbus import SMBus
 
 # Import applications libs
-from metrics import PROM_BM280_METRICS, REQUEST_TIME
+from metrics import PROM_WEATHER_METRICS, REQUEST_TIME
 
 # Get the temperature of the CPU for compensation
 def get_cpu_temperature():
@@ -26,14 +26,13 @@ def get_cpu_temperature():
         temp = int(temp) / 1000.0
     return temp
 
-def get_compensated_temperature():
+def get_compensated_temperature(raw_temp):
     factor = 2.25
     cpu_temps = [get_cpu_temperature()] * 5
     cpu_temp = get_cpu_temperature()
     # Smooth out with some averaging to decrease jitter
     cpu_temps = cpu_temps[1:] + [cpu_temp]
     avg_cpu_temp = sum(cpu_temps) / float(len(cpu_temps))
-    raw_temp = bme280.get_temperature()
     comp_temp = raw_temp - ((avg_cpu_temp - raw_temp) / factor)
     logging.info("Compensated temperature: {:05.2f} *C".format(comp_temp))
     return comp_temp
@@ -46,15 +45,18 @@ bme280 = BME280(i2c_dev=bus)
 # Create Flask application
 app = Flask(__name__)
 
-@app.route('/bm280')
+@app.route('/weather')
 @REQUEST_TIME.time()
-def bm280_sensors():
-    PROM_BM280_METRICS['gauge']['temperature'].set(bme280.get_temperature())
-    PROM_BM280_METRICS['gauge']['cpu_temperature'].set(get_cpu_temperature())
-    PROM_BM280_METRICS['gauge']['compensated_temperature'].set(get_compensated_temperature())
-    PROM_BM280_METRICS['gauge']['pressure'].set(bme280.get_pressure())
-    PROM_BM280_METRICS['gauge']['humidity'].set(bme280.get_humidity())
-    result = { "result" : "OK" }
+def weather_sensors():
+    result = {}
+    result["temperature"] = bme280.get_temperature()
+    PROM_WEATHER_METRICS['gauge']['temperature'].set(result["temperature"])
+    result["compensated_temperature"] = get_compensated_temperature(result["temperature"])
+    PROM_WEATHER_METRICS['gauge']['compensated_temperature'].set(result["compensated_temperature"])
+    result["pressure"] = bme280.get_pressure()
+    PROM_WEATHER_METRICS['gauge']['pressure'].set(result["pressure"])
+    result["humidity"] = bme280.get_humidity()
+    PROM_WEATHER_METRICS['gauge']['humidity'].set(result["humidity"])
     return jsonify(result)
 
 @app.route('/metrics')
