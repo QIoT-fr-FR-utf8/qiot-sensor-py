@@ -2,8 +2,8 @@
 from time import gmtime, strftime
 from enviroplus import gas
 
+#prom side
 from prometheus_client import Gauge
-
 from metrics import PROM_GAS_METRICS
 
 def r_float_value_adc():
@@ -42,9 +42,11 @@ def json_parsing_return():
     d_jsonexport={}
     d_jsonexport['instant']=strftime("%Y-%m-%d %H:%M:%S%Z", gmtime())
     d_jsonexport['nh3']=gas.read_all().nh3
-    PROM_GAS_METRICS['gauge']['nh3'].set(gas.read_all().nh3)
     d_jsonexport['oxidising']=gas.read_all().oxidising
-    PROM_GAS_METRICS['gauge']['oxidising'].set(gas.read_all().oxidising)
     d_jsonexport['reducing']=gas.read_all().reducing
-    PROM_GAS_METRICS['gauge']['reducing'].set(gas.read_all().reducing)
+    
+    PROM_GAS_METRICS['gauge']['nh3'].set(d_jsonexport['nh3'])
+    PROM_GAS_METRICS['gauge']['oxidising'].set(d_jsonexport['oxidising'])
+    PROM_GAS_METRICS['gauge']['reducing'].set(d_jsonexport['reducing'])
+
     return d_jsonexport

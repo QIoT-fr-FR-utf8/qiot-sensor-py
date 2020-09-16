@@ -36,11 +36,13 @@ def json_parsing_return():
     d_jsonexport={}
     d_jsonexport['instant']=strftime("%Y-%m-%d %H:%M:%S%Z", gmtime())
     d_jsonexport["temperature"] = bme280.get_temperature()
-    PROM_WEATHER_METRICS['gauge']['temperature'].set(d_jsonexport["temperature"])
     d_jsonexport["compensated_temperature"] = get_compensated_temperature(d_jsonexport["temperature"])
-    PROM_WEATHER_METRICS['gauge']['compensated_temperature'].set(d_jsonexport["compensated_temperature"])
     d_jsonexport["pressure"] = bme280.get_pressure()
-    PROM_WEATHER_METRICS['gauge']['pressure'].set(d_jsonexport["pressure"])
     d_jsonexport["humidity"] = bme280.get_humidity()
+
+    PROM_WEATHER_METRICS['gauge']['compensated_temperature'].set(d_jsonexport["compensated_temperature"])
+    PROM_WEATHER_METRICS['gauge']['pressure'].set(d_jsonexport["pressure"])
     PROM_WEATHER_METRICS['gauge']['humidity'].set(d_jsonexport["humidity"])
+    PROM_WEATHER_METRICS['gauge']['temperature'].set(d_jsonexport["temperature"])
+    
     return d_jsonexport
