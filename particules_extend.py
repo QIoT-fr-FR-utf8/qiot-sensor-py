@@ -8,7 +8,7 @@ d_value_per_1l={}
 
 d_value_ug_m3.update({"PM1_0":{"value":1.0,"atm":False}})
 d_value_ug_m3.update({"PM2_5":{"value":2.5,"atm":False}})
-d_value_ug_m3.update({"PM10":{"atm":False}})
+d_value_ug_m3.update({"PM10":{"value":10,"atm":False}})
 d_value_ug_m3.update({"PM1_0_atm":{"value":1.0,"atm":True}})
 d_value_ug_m3.update({"PM2_5_atm":{"value":2.5,"atm":True}})
 d_value_ug_m3.update({"PM10_atm":{"value":10,"atm":True}})
