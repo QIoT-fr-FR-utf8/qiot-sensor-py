@@ -1,5 +1,10 @@
 FROM python:alpine3.7
 
+LABEL app="QIoT project"
+LABEL maintener="David AUFFRAY <david.auffray@axians.com>"
+LABEL major_version="1"
+LABEL minor_version="0"
+
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
