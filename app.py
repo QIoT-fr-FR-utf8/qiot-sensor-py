@@ -2,7 +2,6 @@
 
 # Import basic libs
 import time
-import logging
 import os
 
 # Import flask for webservice and prometheus for metrics

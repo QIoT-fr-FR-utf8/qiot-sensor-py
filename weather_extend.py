@@ -26,7 +26,6 @@ def get_compensated_temperature(raw_temp):
     cpu_temps = cpu_temps[1:] + [cpu_temp]
     avg_cpu_temp = sum(cpu_temps) / float(len(cpu_temps))
     comp_temp = raw_temp - ((avg_cpu_temp - raw_temp) / factor)
-    logging.info("Compensated temperature: {:05.2f} *C".format(comp_temp))
     return comp_temp
 
 # Initialize bme280
@@ -37,11 +36,11 @@ def json_parsing_return():
     d_jsonexport={}
     d_jsonexport['instant']=strftime("%Y-%m-%d %H:%M:%S%Z", gmtime())
     d_jsonexport["temperature"] = bme280.get_temperature()
-    PROM_WEATHER_METRICS['gauge']['temperature'].set(result["temperature"])
-    d_jsonexport["compensated_temperature"] = get_compensated_temperature(result["temperature"])
-    PROM_WEATHER_METRICS['gauge']['compensated_temperature'].set(result["compensated_temperature"])
+    PROM_WEATHER_METRICS['gauge']['temperature'].set(d_jsonexport["temperature"])
+    d_jsonexport["compensated_temperature"] = get_compensated_temperature(d_jsonexport["temperature"])
+    PROM_WEATHER_METRICS['gauge']['compensated_temperature'].set(d_jsonexport["compensated_temperature"])
     d_jsonexport["pressure"] = bme280.get_pressure()
-    PROM_WEATHER_METRICS['gauge']['pressure'].set(result["pressure"])
+    PROM_WEATHER_METRICS['gauge']['pressure'].set(d_jsonexport["pressure"])
     d_jsonexport["humidity"] = bme280.get_humidity()
-    PROM_WEATHER_METRICS['gauge']['humidity'].set(result["humidity"])
+    PROM_WEATHER_METRICS['gauge']['humidity'].set(d_jsonexport["humidity"])
     return d_jsonexport
