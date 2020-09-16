@@ -1,4 +1,6 @@
 enviroplus
-flask
+# flask
 prometheus_client
 wheel
+fastapi
+uvicorn
