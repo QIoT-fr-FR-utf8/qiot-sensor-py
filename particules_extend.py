@@ -45,7 +45,7 @@ def json_parsing_return():
     for k,v in d_value_ug_m3.items():
         d_jsonexport[k]=r_int_value_pm_ug_per_m3(v['value'],v['atm'])
 
-    for k,v in d_value_per_1l.items()
+    for k,v in d_value_per_1l.items():
         d_jsonexport[k]=r_int_value_pm_per_1l_air(v['value'])
 
     return d_jsonexport
