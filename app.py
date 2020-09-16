@@ -32,10 +32,6 @@ def listsensor():
 #   "oxidising":double,
 #   "reducing":double,
 # }
-# Message Payload exemple:
-#
-#
-#
 
 @app.route('/api/sensors/gas', methods=['GET'])
 def get_data_gas():

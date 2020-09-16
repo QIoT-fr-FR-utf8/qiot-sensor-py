@@ -1,64 +1,45 @@
 from pms5003 import PMS5003, ReadTimeoutError
+
+
 pms5003 = PMS5003()
+data = pms5003.read()
+d_value_ug_m3={}
+d_value_per_1l={}
 
-def r_float_value_adc():
-    if isinstance(gas.readall().adc, float):
-        return gas.read_all().adc
+d_value_ug_m3={"PM1_0":{"value":1.0,"atm":False}}
+d_value_ug_m3={"PM2_5":{"value":2.5,"atm":False}}
+d_value_ug_m3={"PM10":{"value":10,"atm":False}}
+d_value_ug_m3={"PM1_0_atm":{"value":1.0,"atm":True}}
+d_value_ug_m3={"PM2_5_atm":{"value":2.5,"atm":True}}
+d_value_ug_m3={"PM10_atm":{"value":10,"atm":True}}
+
+d_value_per_1l={"gt0_3um":{"value":0.3}}
+d_value_per_1l={"gt0_5um":{"value":0.5}}
+d_value_per_1l={"gt1_0um":{"value":1.0}}
+d_value_per_1l={"gt2_5um":{"value":2.5}}
+d_value_per_1l={"gt5_0um":{"value":5}}
+d_value_per_1l={"gt10um":{"value":10}}
+
+def r_int_value_pm_ug_per_m3(val,atm=False):
+    if isinstance(data.pm_ug_per_m3(val,atm), int):
+        return data.pm_ug_per_m3(val,atm)
     else:
         return 0
 
-
-def r_float_value_nh3():
-    if isinstance(gas.readall().nh3, float):
-        return gas.read_all().nh3
-    else:
-        return 0
-
-
-def r_float_value_oxidising():
-    if isinstance(gas.readall().oxidising, float):
-        return gas.read_all().oxidising
-    else:
-        return 0
-
-
-def r_float_value_reducing():
-    if isinstance(gas.readall().reducing, float):
-        return gas.read_all().reducing
+def r_int_value_pm_per_1l_air(val):
+    if isinstance(data.pm_ug_per_m3(val), int):
+        return data.pm_per_1l_air(val)
     else:
         return 0
 
 
 def json_parsing_return():
     d_jsonexport={}
+    
+    for k,v in d_value_ug_m3.items()
+        d_jsonexport[k]=r_int_value_pm_ug_per_m3(v['value'],v['atm'])
 
-    d_jsonexport["PM1_0"]
-    d_jsonexport["PM2_5"]
-    d_jsonexport["PM10"]
-    d_jsonexport["PM1_0_atm"]
-    d_jsonexport["PM2_5_atm"]
-    d_jsonexport["PM10_atm"]
-    d_jsonexport["gt0_3um"]
-    d_jsonexport["gt0_5um"]
-    d_jsonexport["gt1_0um"]
-    d_jsonexport["gt2_5um"]
-    d_jsonexport["gt5_0um"]
-    d_jsonexport["gt10um"]
-
-    return d_jsonexport
-
-
-
-
-
-
-
-
-
-
-    d_jsonexport['instant']=strftime("%Y-%m-%d %H:%M:%S%Z", gmtime())
-    d_jsonexport['nh3']=gas.read_all().nh3
-    d_jsonexport['oxidising']=gas.read_all().oxidising
-    d_jsonexport['reducing']=gas.read_all().reducing
+    for k,v in d_value_per_1l.items()
+        d_jsonexport[k]=r_int_value_pm_ug_per_m3(v['value'],v['atm'])
 
     return d_jsonexport
