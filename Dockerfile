@@ -16,6 +16,11 @@ ENV APP_PORT 8000
 ENV APP_HOST "0.0.0.0"
 ENV APP_DEBUG "False"
 
+<<<<<<< HEAD
+=======
+RUN dnf install -f make
+RUN pip install --no-cache-dir -r requirements.txt
+>>>>>>> parent of c3b9561... correct Dockerfile
 
 RUN sudo dnf install make -y
 RUN pip3 install -r requirements.txt
