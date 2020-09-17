@@ -35,39 +35,46 @@ def index():
 
 @app.route('/api/sensors', methods=['GET'])
 def listsensor():
-    listofSensor=[]
-    listofSensor.append('/api/sensors/gas')
-    listofSensor.append('/api/sensors/particules')
-    listofSensor.append('/api/sensors/weather')
-    result={}
-    result={"result":listofSensor}
+    if request.method == 'GET':
+        listofSensor=[]
+        listofSensor.append('/api/sensors/gas')
+        listofSensor.append('/api/sensors/particules')
+        listofSensor.append('/api/sensors/weather')
+        listofSensor.append('/api/lcd')
+        result={}
+        result={"result":listofSensor}
 
-    return jsonify(result)
+        return jsonify(result)
 
 @app.route('/api/sensors/gas', methods=['GET'])
 def get_data_gas():
-    result={}
-    result={"result":gas_extend.json_parsing_return()}
-    return jsonify(result)
+    if request.method == 'GET':
+        result={}
+        result={"result":gas_extend.json_parsing_return()}
+        return jsonify(result)
 
 @app.route('/api/sensors/particules', methods=['GET'])
 def get_data_particules():
-    result={}
-    result={"result":particules_extend.json_parsing_return()}
-    return jsonify(result)
+    if request.method == 'GET':
+        result={}
+        result={"result":particules_extend.json_parsing_return()}
+        return jsonify(result)
 
-@app.route('/api/lcd/<message>', methods=['POST'])
+@app.route('/api/lcd', methods=['POST'])
 def post_message_to_lcd():
+    if request.method == 'POST':
+        data=request.get_json()
+        result={"result":{"message posted":draw_message(data['message'])}}
+        return jsonify(result)
     
-    result={"result":{"message posted":draw_message(request.get_json('message'))}}
-    return jsonify(result)
 
 @app.route('/api/sensors/weather', methods=['GET'])
 @REQUEST_TIME.time()
 def get_weather():
-    result={}
-    result={"result":weather_extend.json_parsing_return()}
-    return jsonify(result)
+    if request.method == 'GET':
+        result={}
+        result={"result":weather_extend.json_parsing_return()}
+        return jsonify(result)
 
 if __name__=='__main__':
     lcd.draw
