@@ -26,14 +26,14 @@ def metrics():
     """Flask endpoint to gather the metrics, will be called by Prometheus."""
     return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
     result={}
     result['result']="Hello QIoT"
     return jsonify(result)
 
 
-@app.route('/api/sensors')
+@app.route('/api/sensors', methods=['GET'])
 def listsensor():
     listofSensor=[]
     listofSensor.append('/api/sensors/gas')
@@ -54,6 +54,12 @@ def get_data_gas():
 def get_data_particules():
     result={}
     result={"result":particules_extend.json_parsing_return()}
+    return jsonify(result)
+
+@app.route('/api/lcd/<message>', methods=['POST'])
+def post_message_to_lcd():
+    
+    result={"result":{"message posted":draw_message(request.get_json('message'))}}
     return jsonify(result)
 
 @app.route('/api/sensors/weather', methods=['GET'])

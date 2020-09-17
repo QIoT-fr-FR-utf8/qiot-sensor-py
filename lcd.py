@@ -44,5 +44,16 @@ def draw():
     draw.text((x, y), message, font=font, fill=text_colour)
     disp.display(img)
 
+
+def draw_message(display_message):
+    try: 
+        # Draw background rectangle and write text.
+        draw.rectangle((0, 0, 160, 80), back_colour)
+        draw.text((x, y), display_message, font=font, fill=text_colour)
+        disp.display(img)
+        return "Message {0} Display".format(message)
+    except:
+        return "Fail to post message"
+
 def stop():
     disp.set_backlight(0)
