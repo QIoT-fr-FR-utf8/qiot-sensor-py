@@ -34,7 +34,7 @@ def index():
 def listsensor():
     listofSensor=[]
     listofSensor.append('/api/sensors/gas')
-    listofSensor.append('/api/sensors/pollution')
+    listofSensor.append('/api/sensors/particules')
     listofSensor.append('/api/sensors/weather')
     result={}
     result={"result":listofSensor}
