@@ -1,4 +1,4 @@
-FROM quay.io/acb-fr/qiot-sensor-service-base:1.0.0
+FROM python:alpine3.7
 
 LABEL app="QIoT project"
 LABEL maintener="David AUFFRAY <david.auffray@axians.com>"
@@ -14,7 +14,7 @@ ENV APP_PORT 8000
 ENV APP_HOST "0.0.0.0"
 ENV APP_DEBUG "False"
 
-RUN sudo dnf install make -y
+RUN apk update 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
