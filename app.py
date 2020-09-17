@@ -3,6 +3,7 @@
 # Import basic libs
 import time
 import os
+import atexit
 
 # Import flask for webservice and prometheus for metrics
 from flask import Flask,jsonify,Response,request
@@ -13,7 +14,9 @@ from metrics import REQUEST_TIME
 import gas_extend
 import particules_extend
 import weather_extend
+import lcd
 
+atexit.register(lcd.stop)
 
 # Create Flask application
 app = Flask(__name__)
@@ -61,5 +64,6 @@ def get_weather():
     return jsonify(result)
 
 if __name__=='__main__':
+    lcd.draw
     app.run(host=os.getenv('FLASK_APP_HOST'),port=os.getenv('FLASK_APP_PORT'),
             debug=os.getenv('FLASK_APP_DEBUG'))
