@@ -18,4 +18,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD [ "python3", "app.py" ]
+CMD [ "gunicorn", "app:app", "-b", "$FLASK_APP_HOST:$FLASK_APP_PORT" ]
