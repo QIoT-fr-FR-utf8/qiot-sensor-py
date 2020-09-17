@@ -16,7 +16,7 @@ ENV APP_DEBUG "False"
 
 COPY . .
 
-RUN ["ls","-al"]
+RUN /bin/bash --help
 
 
 CMD [ "/bin/bash" ]
