@@ -17,7 +17,10 @@ ENV APP_HOST "0.0.0.0"
 ENV APP_DEBUG "False"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of c3b9561... correct Dockerfile
 RUN dnf install -f make
 RUN pip install --no-cache-dir -r requirements.txt
 >>>>>>> parent of c3b9561... correct Dockerfile
