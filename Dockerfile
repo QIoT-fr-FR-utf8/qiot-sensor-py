@@ -14,9 +14,6 @@ ENV APP_PORT 8000
 ENV APP_HOST "0.0.0.0"
 ENV APP_DEBUG "False"
 
-RUN sudo whoami
-RUN sudo dnf search make
-RUN sudo dnf install make -y
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
