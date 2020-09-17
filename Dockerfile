@@ -14,6 +14,7 @@ ENV APP_PORT 8000
 ENV APP_HOST "0.0.0.0"
 ENV APP_DEBUG "False"
 
+RUN dnf search make
 RUN dnf install make -y
 RUN pip install --no-cache-dir -r requirements.txt
 
