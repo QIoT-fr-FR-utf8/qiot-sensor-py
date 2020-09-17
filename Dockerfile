@@ -17,6 +17,3 @@ ENV APP_DEBUG "False"
 COPY . .
 
 RUN /bin/bash --help
-
-
-CMD [ "/bin/bash" ]
