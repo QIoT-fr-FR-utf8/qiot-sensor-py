@@ -14,8 +14,6 @@ ENV APP_PORT 8000
 ENV APP_HOST "0.0.0.0"
 ENV APP_DEBUG "False"
 
-
-RUN whoami
 RUN sudo whoami
 RUN sudo dnf search make
 RUN sudo dnf install make -y
