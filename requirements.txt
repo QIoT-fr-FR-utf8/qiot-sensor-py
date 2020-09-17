@@ -1,4 +1,4 @@
 enviroplus
 prometheus_client
 fastapi
-hypercorn
+uvcorn
