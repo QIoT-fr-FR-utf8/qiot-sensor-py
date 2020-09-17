@@ -19,4 +19,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD [ "hypercorn", "app:app","--bind","$APP_HOST:$APP_PORT" ]
+CMD [ "uvicorn", "app:app","--host","$APP_HOST","--port","$APP_PORT" ]
