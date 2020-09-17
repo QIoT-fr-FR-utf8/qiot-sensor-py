@@ -41,17 +41,6 @@ def listsensor():
 
     return jsonify(result)
 
-#get /api/gas
-# Message type
-# {
-#   "stationId":int,
-#   "instant":String*,
-#   "adc":double,
-#   "nh3":double,
-#   "oxidising":double,
-#   "reducing":double,
-# }
-
 @app.route('/api/sensors/gas', methods=['GET'])
 def get_data_gas():
     result={}
