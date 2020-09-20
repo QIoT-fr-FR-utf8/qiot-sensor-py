@@ -4,19 +4,19 @@
 import time
 import os
 import atexit
-
+import redis
 # Import flask for webservice and prometheus for metrics
 from flask import Flask,jsonify,Response,request
-from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+# from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 # Import applications libs
 from metrics import REQUEST_TIME
-import gas_extend
-import particules_extend
-import weather_extend
 import lcd
 
 atexit.register(lcd.stop)
+
+def redis_connect():
+    return redis.Redis(db="127.0.0.1",port=6379, db=0)
 
 # Create Flask application
 app = Flask(__name__)
@@ -50,7 +50,10 @@ def listsensor():
 def get_data_gas():
     if request.method == 'GET':
         result={}
-        result={"result":gas_extend.json_parsing_return()}
+        l_result=[]
+        while(redisClient.llen('gas')!=0):
+            l_result.append(redisClient.lpop('gas'))
+        result={"result":l_result}
         return jsonify(result)
 
 @app.route('/api/sensors/particules', methods=['GET'])
