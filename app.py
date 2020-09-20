@@ -64,7 +64,7 @@ def get_data_particules():
 def post_message_to_lcd():
     if request.method == 'POST':
         data=request.get_json()
-        result={"result":{"message posted":draw_message(data['message'])}}
+        result={"result":{"message posted":lcd.draw_message(data['message'])}}
         return jsonify(result)
     
 
