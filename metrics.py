@@ -1,4 +1,4 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 
 from prometheus_client import (Counter,
                                Gauge,
@@ -19,6 +19,23 @@ PROM_GAS_METRICS = {
         "nh3": Gauge('gas_nh3_ohms', 'TBD'),
         "oxidising": Gauge('gas_oxidising_ohms', 'TBD'),
         "reducing": Gauge('gas_reducing_ohms', 'TBD')
+    }
+}
+
+PROM_PARTICULES_METRICS = {
+    "gauge" : {
+        "pm1_0": Gauge('pm1_0', 'TBD'),
+        "pm1_0_atm": Gauge('pm1_0_atm', 'TBD'),
+        "pm2_5": Gauge('pm2_5', 'TBD'),
+        "pm2_5_atm": Gauge('pm2_5_atm', 'TBD'),
+        "pm10": Gauge('pm10', 'TBD'),
+        "pm10_atm": Gauge('pm10_atm', 'TBD'),
+        "gt0_3um": Gauge('gt0_3um', 'TBD'),
+        "gt0_5um": Gauge('gt0_5um', 'TBD'),
+        "gt1_0um": Gauge('gt1_0m', 'TBD'),
+        "gt2_5um": Gauge('gt2_5m', 'TBD'),
+        "gt5_0um": Gauge('gt5_0m', 'TBD'),
+        "gt10um": Gauge('gt10m', 'TBD')
     }
 }
 
