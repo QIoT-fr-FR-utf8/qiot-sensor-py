@@ -64,7 +64,7 @@ def get_data_particules():
 def post_message_to_lcd():
     if request.method == 'POST':
         data=request.get_json()
-        result={"result":{"message posted":draw_message(data['message'])}}
+        result={"result":{"message posted":lcd.draw_message(data['message'])}}
         return jsonify(result)
     
 
@@ -77,6 +77,6 @@ def get_weather():
         return jsonify(result)
 
 if __name__=='__main__':
-    lcd.draw
+    lcd.draw_message()
     app.run(host=os.getenv('FLASK_APP_HOST'),port=os.getenv('FLASK_APP_PORT'),
             debug=os.getenv('FLASK_APP_DEBUG'))

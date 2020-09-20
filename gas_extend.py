@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from time import gmtime, strftime
 from enviroplus import gas
 

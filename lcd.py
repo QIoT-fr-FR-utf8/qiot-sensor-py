@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import ST7735
 from PIL import Image, ImageDraw, ImageFont
 from fonts.ttf import RobotoMedium as UserFont
@@ -38,16 +36,13 @@ size_x, size_y = draw.textsize(message, font)
 x = (WIDTH - size_x) / 2
 y = (HEIGHT / 2) - (size_y / 2)
 
-def draw():
-    # Draw background rectangle and write text.
-    draw.rectangle((0, 0, 160, 80), back_colour)
-    draw.text((x, y), message, font=font, fill=text_colour)
-    disp.display(img)
+# Draw background rectangle and write text.
+draw.rectangle((0, 0, 160, 80), back_colour)
+draw.text((x, y), message, font=font, fill=text_colour)
+disp.display(img)
 
-
-def draw_message(display_message):
+def draw_message(display_message="[QIoT Axians]"):
     try: 
-        # Draw background rectangle and write text.
         draw.rectangle((0, 0, 160, 80), back_colour)
         draw.text((x, y), display_message, font=font, fill=text_colour)
         disp.display(img)
