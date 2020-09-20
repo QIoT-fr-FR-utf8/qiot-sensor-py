@@ -1,3 +1,4 @@
+from time import gmtime, strftime
 from pms5003 import PMS5003, ReadTimeoutError
 
 #prom side
@@ -52,6 +53,8 @@ def json_parsing_return():
     d_jsonexport={}
     data = pms5003.read()
     
+    d_jsonexport['instant']=strftime("%Y-%m-%d %H:%M:%S%Z", gmtime())
+
     for k,v in d_value_ug_m3.items():
         d_jsonexport[k]=r_int_value_pm_ug_per_m3(data, v['value'],v['atm'])
         PROM_PARTICULES_METRICS['gauge'][k].set(d_jsonexport[k])

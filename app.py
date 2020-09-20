@@ -77,6 +77,6 @@ def get_weather():
         return jsonify(result)
 
 if __name__=='__main__':
-    lcd.draw()
+    lcd.draw_message()
     app.run(host=os.getenv('FLASK_APP_HOST'),port=os.getenv('FLASK_APP_PORT'),
             debug=os.getenv('FLASK_APP_DEBUG'))
