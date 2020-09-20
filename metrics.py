@@ -24,18 +24,18 @@ PROM_GAS_METRICS = {
 
 PROM_PARTICULES_METRICS = {
     "gauge" : {
-        "pm1_0": Gauge('pm1_0', 'TBD'),
-        "pm1_0_atm": Gauge('pm1_0_atm', 'TBD'),
-        "pm2_5": Gauge('pm2_5', 'TBD'),
-        "pm2_5_atm": Gauge('pm2_5_atm', 'TBD'),
-        "pm10": Gauge('pm10', 'TBD'),
-        "pm10_atm": Gauge('pm10_atm', 'TBD'),
-        "gt0_3um": Gauge('gt0_3um', 'TBD'),
-        "gt0_5um": Gauge('gt0_5um', 'TBD'),
-        "gt1_0um": Gauge('gt1_0m', 'TBD'),
-        "gt2_5um": Gauge('gt2_5m', 'TBD'),
-        "gt5_0um": Gauge('gt5_0m', 'TBD'),
-        "gt10um": Gauge('gt10m', 'TBD')
+        "PM1_0": Gauge('pm1_0_ug_per_m3', 'Particles of 1 micron and smaller concentration, in ug/m3'),
+        "PM1_0_atm": Gauge('pm1_0_atm_ug_per_m3', 'Particles of 1 micron and smaller concentration, with atmospheric environment, in ug/m3'),
+        "PM2_5": Gauge('pm2_5_ug_per_m3', 'Particles of 2.5 micron and smaller concentration, in ug/m3'),
+        "PM2_5_atm": Gauge('pm2_5_atm_ug_per_m3', 'Particles of 2.5 micron and smaller concentration, with atmospheric environment, in ug/m3'),
+        "PM10": Gauge('pm10_ug_per_m3', 'Particles of 10 micron and smaller concentration, in ug/m3'),
+        "PM10_atm": Gauge('pm10_atm_ug_per_m3', 'Particles of 10 micron and smaller concentration, with atmospheric environment, in ug/m3'),
+        "gt0_3um": Gauge('gt0_3um', 'Number of particles of 0.3 microns per tenth of a litre of air'),
+        "gt0_5um": Gauge('gt0_5um', 'Number of particles of 0.5 microns per tenth of a litre of air'),
+        "gt1_0um": Gauge('gt1_0m', 'Number of particles of 1.0 microns per tenth of a litre of air'),
+        "gt2_5um": Gauge('gt2_5m', 'Number of particles of 2.5 microns per tenth of a litre of air'),
+        "gt5_0um": Gauge('gt5_0m', 'Number of particles of 5.0 microns per tenth of a litre of air'),
+        "gt10um": Gauge('gt10m', 'Number of particles of 10 microns per tenth of a litre of air')
     }
 }
 
