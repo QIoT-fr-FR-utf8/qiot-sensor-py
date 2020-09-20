@@ -38,7 +38,7 @@ def listsensor():
     if request.method == 'GET':
         listofSensor=[]
         listofSensor.append('/api/sensors/gas')
-        listofSensor.append('/api/sensors/particules')
+        listofSensor.append('/api/sensors/pollution')
         listofSensor.append('/api/sensors/weather')
         listofSensor.append('/api/lcd')
         result={}
@@ -53,7 +53,7 @@ def get_data_gas():
         result={"result":gas_extend.json_parsing_return()}
         return jsonify(result)
 
-@app.route('/api/sensors/particules', methods=['GET'])
+@app.route('/api/sensors/pollution', methods=['GET'])
 def get_data_particules():
     if request.method == 'GET':
         result={}
