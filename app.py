@@ -46,6 +46,19 @@ def listsensor():
 
         return jsonify(result)
 
+
+@app.route('/api/sensors/<name>', methods=['GET'])
+def get_data_from(name)):
+    if request.method == 'GET':
+        result={}
+        val=""
+        val = gas_extend.json_parsing_return() if name == 'gas'
+        val = particules.json_parsing_return() if name == 'pollution'
+        val = weather_extend.json_parsing_return() if name == 'weather'
+        result={"result":val}
+        return jsonify(result)
+
+
 @app.route('/api/sensors/gas', methods=['GET'])
 def get_data_gas():
     if request.method == 'GET':
