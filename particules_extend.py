@@ -58,7 +58,7 @@ def json_parsing_return():
 
     for k,v in d_value_per_1l.items():
         d_jsonexport[k]=r_int_value_pm_per_1l_air(data, v['value'])
-        PROM_PARTICULES_METRICS['gauge'][k]].set(d_jsonexport[k])
+        PROM_PARTICULES_METRICS['gauge'][k].set(d_jsonexport[k])
 
     return d_jsonexport
 
