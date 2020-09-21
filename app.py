@@ -16,15 +16,15 @@ import lcd
 atexit.register(lcd.stop)
 
 def redis_connect():
-    return redis.Redis(host="redis",port=6379, db=0)
+    return redis.Redis(host=os.getenv('REDIS_HOST'),port=6379, db=0, decode_responses=True)
 
 # Create Flask application
 app = Flask(__name__)
 
-@app.route('/metrics')
-def metrics():
-    """Flask endpoint to gather the metrics, will be called by Prometheus."""
-    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
+#@app.route('/metrics')
+#def metrics():
+#    """Flask endpoint to gather the metrics, will be called by Prometheus."""
+#    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -53,7 +53,7 @@ def get_data_gas():
         result={}
         l_result=[]
         while(redisClient.llen('gas')!=0):
-            l_result.append(redisClient.lpop('gas'))
+            l_result.append(str(redisClient.lpop('gas')))
         result={"result":l_result}
         return jsonify(result)
 
@@ -81,6 +81,6 @@ def get_weather():
         return jsonify(result)
 
 if __name__=='__main__':
-    lcd.draw_message()
+ #   lcd.draw_message()
     app.run(host=os.getenv('FLASK_APP_HOST'),port=os.getenv('FLASK_APP_PORT'),
             debug=os.getenv('FLASK_APP_DEBUG'))

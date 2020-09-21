@@ -10,12 +10,13 @@ def redisConnection():
 
 def main():
     r = redisConnection()
+#    i=0
     while True:
         try:
-            r.lpush('gas',gas_extend.json_parsing_return())
-            r.lpush('pollution',particules_extend.json_parsing_return())
-            r.lpush('weather',weather_extend.json_parsing_return())
-            sleep(15)
+            if os.getenv('RETRIEVE_TYPE') in ('gas','all') : r.lpush('gas',str(gas_extend.json_parsing_return()))
+            if os.getenv('RETRIEVE_TYPE') in ('pollution','all') : r.lpush('pollution',str(particules_extend.json_parsing_return()))
+            if os.getenv('RETRIEVE_TYPE') in ('weather','all') : r.lpush('weather',str(weather_extend.json_parsing_return()))
+            sleep(int(os.getenv('RETRIEVE_TIME')))
         except KeyboardInterrupt:
             raise
         except:

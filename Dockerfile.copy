@@ -12,6 +12,8 @@
     ENV REDIS_HOST "redis"
     ENV REDIS_PORT 6379
     ENV REDIS_DB 0
+    ENV RETRIEVE_TIME 15
+    ENV RETRIEVE_TYPE "all"
 
     RUN pip install --no-cache-dir -r requirements.txt
 
