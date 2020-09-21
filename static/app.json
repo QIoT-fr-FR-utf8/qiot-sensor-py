@@ -1,0 +1,104 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample server to test the QIoT project -- this is internal project documentation",
+    "version": "1.0.0",
+    "title": "Swagger for QIoT application",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "david.auffray@axians.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "iot.apprendre-linux.fr",
+  "basePath": "/v2",
+  "tags": [
+    {
+      "name": "/api/sensors",
+      "description": "Everything about sensors",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "/api/sensors/lcd",
+      "description": "Write Something on LCD Screen"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/sensors/gas": {
+      "get": {
+        "tags": [
+          "/api/sensors"
+        ],
+        "summary": "Get gas values",
+        "description": "Retrieve values from the QIoT device and expose them to this API",
+        "operationId": "/api/sensors/gas",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/api/sensors/pollution": {
+      "get": {
+        "tags": [
+          "/api/sensors"
+        ],
+        "summary": "Get pollution values",
+        "description": "Retrieve values from the QIoT device and expose them to this API",
+        "operationId": "/api/sensors/pollution",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/api/sensors/weather": {
+      "get": {
+        "tags": [
+          "/api/sensors"
+        ],
+        "summary": "Get weather values",
+        "description": "Retrieve values from the QIoT device and expose them to this API",
+        "operationId": "/api/sensors/weather",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

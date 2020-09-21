@@ -6,7 +6,7 @@ import os
 import atexit
 
 # Import flask for webservice and prometheus for metrics
-from flask import Flask,jsonify,Response,request
+from flask import Flask,jsonify, Response,request, render_template
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 # Import applications libs
@@ -76,6 +76,18 @@ def get_weather():
         result={}
         result={"result":weather_extend.json_parsing_return()}
         return jsonify(result)
+
+
+@app.route('/api/docs')
+def get_docs():
+    print('sending docs')
+    return render_template('swaggerui.html')
+
+@app.errorhandler(404)
+def ressource_not_found(e):
+    error="{0}".format(e)
+    return jsonify({"result":error}), 404
+
 
 if __name__=='__main__':
     lcd.draw_message()
