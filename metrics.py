@@ -16,6 +16,7 @@ PROM_WEATHER_METRICS = {
 
 PROM_GAS_METRICS = {
     "gauge" : {
+        "adc": Gauge('gas_adc_ohms', 'TBD'),
         "nh3": Gauge('gas_nh3_ohms', 'TBD'),
         "oxidising": Gauge('gas_oxidising_ohms', 'TBD'),
         "reducing": Gauge('gas_reducing_ohms', 'TBD')
