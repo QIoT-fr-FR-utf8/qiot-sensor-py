@@ -18,8 +18,7 @@
 
     RUN apk add gcc libc-dev make linux-headers libgpiod-dev i2c-tools git
     RUN pip install --no-cache-dir -r requirements.txt
-    RUN git clone https://github.com/pimoroni/enviroplus-python.git /
+    RUN git clone https://github.com/pimoroni/enviroplus-python.git /enviroplus
 
     COPY . .
 
-    CMD [ "gunicorn", "app:app"]
