@@ -16,7 +16,7 @@
     ENV FLASK_APP_LOG_FILE "/var/log/gunicorn.log"
     ENV GUNICORN_CMD_ARGS "--bind=$FLASK_APP_HOST:$FLASK_APP_PORT $FLASK_APP_LOG $FLASK_APP_LOG_FILE"
 
-    RUN apk add gcc libc-dev make
+    RUN apk add gcc libc-dev make linux-headers
     RUN pip install --no-cache-dir -r requirements.txt
     RUN apk del gcc libc-dev make
 
