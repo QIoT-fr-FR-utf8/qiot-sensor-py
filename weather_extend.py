@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+""" Retrieve weather info from Enviro+ sensor """
 from time import gmtime, strftime
 
 # Import device libs
@@ -13,12 +13,14 @@ from metrics import PROM_WEATHER_METRICS
 
 # Get the temperature of the CPU for compensation
 def get_cpu_temperature():
-    with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
-        temp = f.read()
+    """ Get CPU Temperature """
+    with open("/sys/class/thermal/thermal_zone0/temp", "r") as f_temp:
+        temp = f_temp.read()
         temp = int(temp) / 1000.0
     return temp
 
 def get_compensated_temperature(raw_temp):
+    """ Get Compensated Temperature """
     factor = 1.3
     cpu_temps = [get_cpu_temperature()] * 5
     cpu_temp = get_cpu_temperature()
@@ -29,20 +31,23 @@ def get_compensated_temperature(raw_temp):
     return comp_temp
 
 # Initialize bme280
-bus = SMBus(1)
-bme280 = BME280(i2c_dev=bus)
+BUS = SMBus(1)
+BME_280 = BME280(i2c_dev=BUS)
 
 def json_parsing_return():
-    d_jsonexport={}
-    d_jsonexport['instant']=strftime("%Y-%m-%d %H:%M:%S%Z", gmtime())
-    d_jsonexport["temperature"] = bme280.get_temperature()
-    d_jsonexport["compensated_temperature"] = get_compensated_temperature(d_jsonexport["temperature"])
-    d_jsonexport["pressure"] = bme280.get_pressure()
-    d_jsonexport["humidity"] = bme280.get_humidity()
+    """ Returns JSON metrics """
+    d_jsonexport = {}
+    d_jsonexport['instant'] = strftime("%Y-%m-%d %H:%M:%S%Z", gmtime())
+    d_jsonexport["temperature"] = BME_280.get_temperature()
+    d_jsonexport["compensated_temperature"] = get_compensated_temperature(\
+        d_jsonexport["temperature"])
+    d_jsonexport["pressure"] = BME_280.get_pressure()
+    d_jsonexport["humidity"] = BME_280.get_humidity()
 
-    PROM_WEATHER_METRICS['gauge']['compensated_temperature'].set(d_jsonexport["compensated_temperature"])
+    PROM_WEATHER_METRICS['gauge']['compensated_temperature'].set(\
+        d_jsonexport["compensated_temperature"])
     PROM_WEATHER_METRICS['gauge']['pressure'].set(d_jsonexport["pressure"])
     PROM_WEATHER_METRICS['gauge']['humidity'].set(d_jsonexport["humidity"])
     PROM_WEATHER_METRICS['gauge']['temperature'].set(d_jsonexport["temperature"])
-    
+
     return d_jsonexport
