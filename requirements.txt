@@ -1,7 +1,6 @@
 enviroplus
 RPi.GPIO
 prometheus_client
-wheel
 gunicorn
 uvicorn
 fastapi
