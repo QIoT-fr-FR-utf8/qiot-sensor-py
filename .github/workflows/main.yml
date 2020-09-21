@@ -23,6 +23,6 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Python Code Quality and Lint
-        # You may pin to the exact commit or the version.
-        # uses: ricardochaves/python-lint@32032eca67291cd71f88d79e61bc4b904ee03265
-        uses: ricardochaves/python-lint@v1.3.0
+        run: |
+          pip install pylint
+          pylint .
