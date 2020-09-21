@@ -16,7 +16,7 @@ import lcd
 atexit.register(lcd.stop)
 
 def redis_connect():
-    return redis.Redis(db="127.0.0.1",port=6379, db=0)
+    return redis.Redis(host="redis",port=6379, db=0)
 
 # Create Flask application
 app = Flask(__name__)
@@ -48,6 +48,7 @@ def listsensor():
 
 @app.route('/api/sensors/gas', methods=['GET'])
 def get_data_gas():
+    redisClient = redis_connect()
     if request.method == 'GET':
         result={}
         l_result=[]

@@ -3,3 +3,4 @@ flask
 prometheus_client
 wheel
 gunicorn
+redis
