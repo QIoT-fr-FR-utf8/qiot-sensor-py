@@ -35,4 +35,4 @@ jobs:
       - name: Python Code Quality and Lint
         run: |
           pip install pylint
-          pylint .
+          pylint *.py
