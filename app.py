@@ -16,15 +16,15 @@ import lcd
 atexit.register(lcd.stop)
 
 def redis_connect():
-    return redis.Redis(host=os.getenv('REDIS_HOST'),port=6379, db=0, decode_responses=True)
+    return redis.Redis(host=os.getenv('REDIS_HOST'),port=os.getenv('REDIS_PORT'), db=os.getenv('REDIS_DB'), decode_responses=True)
 
 # Create Flask application
 app = Flask(__name__)
 
-#@app.route('/metrics')
-#def metrics():
+@app.route('/metrics')
+def metrics():
 #    """Flask endpoint to gather the metrics, will be called by Prometheus."""
-#    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
+    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -59,13 +59,17 @@ def get_data_gas():
 
 @app.route('/api/sensors/particules', methods=['GET'])
 def get_data_particules():
+    redisClient = redis_connect()
     if request.method == 'GET':
         result={}
-        result={"result":particules_extend.json_parsing_return()}
-        return jsonify(result)
+        l_result=[]
+        while(redisClient.llen('particules')!=0):
+            l_result.append(str(redisClient.lpop('particules')))
+        result={"result":l_result}
 
 @app.route('/api/lcd', methods=['POST'])
 def post_message_to_lcd():
+    redisClient = redis_connect()
     if request.method == 'POST':
         data=request.get_json()
         result={"result":{"message posted":lcd.draw_message(data['message'])}}
@@ -75,11 +79,27 @@ def post_message_to_lcd():
 @app.route('/api/sensors/weather', methods=['GET'])
 @REQUEST_TIME.time()
 def get_weather():
+    redisClient = redis_connect()
     if request.method == 'GET':
         result={}
-        result={"result":weather_extend.json_parsing_return()}
-        return jsonify(result)
+        l_result=[]
+        while(redisClient.llen('weather')!=0):
+            l_result.append(str(redisClient.lpop('weather')))
+        result={"result":l_result}
 
+
+@app.route('/api/sensors/<name>', methods=['GET'])
+@REQUEST_TIME.time()
+def get_data(name):
+    redisClient = redis_connect()
+    if request.method == 'GET':
+        result={}
+        l_result=[]
+        while(redisClient.llen(name)!=0):
+            l_result.append(str(redisClient.lpop(name)))
+        result={"result":l_result}
+        
+        
 if __name__=='__main__':
  #   lcd.draw_message()
     app.run(host=os.getenv('FLASK_APP_HOST'),port=os.getenv('FLASK_APP_PORT'),
