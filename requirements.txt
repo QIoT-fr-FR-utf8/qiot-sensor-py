@@ -3,3 +3,5 @@ RPi.GPIO
 prometheus_client
 fastapi
 smbus
+gunicorn
+uvicorn
