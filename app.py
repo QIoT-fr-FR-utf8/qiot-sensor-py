@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
 
 # Import flask for webservice and prometheus for metrics
-from flask import Flask,jsonable_encoder, Response,request, render_template
+#from flask import Flask, Response,request, render_template
 
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
