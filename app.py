@@ -5,8 +5,12 @@ import time
 import os
 import atexit
 
+from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
+
 # Import flask for webservice and prometheus for metrics
-from flask import Flask,jsonify, Response,request, render_template
+from flask import Flask,jsonable_encoder, Response,request, render_template
+
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 # Import applications libs
@@ -19,23 +23,23 @@ import lcd
 atexit.register(lcd.stop)
 
 # Create Flask application
-app = Flask(__name__)
+# app = Flask(__name__)
+app = FastAPI()
 
-@app.route('/metrics')
-def metrics():
-    """Flask endpoint to gather the metrics, will be called by Prometheus."""
-    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
+# @app.get('/metrics')
+# def metrics():
+#     """Flask endpoint to gather the metrics, will be called by Prometheus."""
+#     return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
 
-@app.route('/', methods=['GET'])
+@app.get('/')
 def index():
     result={}
     result['result']="Hello QIoT"
-    return jsonify(result)
+    return jsonable_encoder(result)
 
 
-@app.route('/api/sensors', methods=['GET'])
+@app.get('/api/sensors')
 def listsensor():
-    if request.method == 'GET':
         listofSensor=[]
         listofSensor.append('/api/sensors/gas')
         listofSensor.append('/api/sensors/pollution')
@@ -44,49 +48,45 @@ def listsensor():
         result={}
         result={"result":listofSensor}
 
-        return jsonify(result)
+        return jsonable_encoder(result)
 
 
-@app.route('/api/sensors/gas', methods=['GET'])
+@app.get('/api/sensors/gas')
 def get_data_gas():
-    if request.method == 'GET':
         result={}
         result={"result":gas_extend.json_parsing_return()}
-        return jsonify(result)
+        return jsonable_encoder(result)
 
-@app.route('/api/sensors/pollution', methods=['GET'])
+@app.get('/api/sensors/pollution')
 def get_data_particules():
-    if request.method == 'GET':
         result={}
         result={"result":particules_extend.json_parsing_return()}
-        return jsonify(result)
+        return jsonable_encoder(result)
 
-@app.route('/api/lcd', methods=['POST'])
+@app.post('/api/lcd')
 def post_message_to_lcd():
-    if request.method == 'POST':
         data=request.get_json()
         result={"result":{"message posted":lcd.draw_message(data['message'])}}
-        return jsonify(result)
+        return jsonable_encoder(result)
     
 
-@app.route('/api/sensors/weather', methods=['GET'])
+@app.get('/api/sensors/weather')
 @REQUEST_TIME.time()
 def get_weather():
-    if request.method == 'GET':
         result={}
         result={"result":weather_extend.json_parsing_return()}
-        return jsonify(result)
+        return jsonable_encoder(result)
 
 
-@app.route('/api/docs')
-def get_docs():
-    print('sending docs')
-    return render_template('swaggerui.html')
+# @app.get('/api/docs')
+# def get_docs():
+#     print('sending docs')
+#     return render_template('swaggerui.html')
 
-@app.errorhandler(404)
-def ressource_not_found(e):
-    error="{0}".format(e)
-    return jsonify({"result":error}), 404
+# @app.errorhandler(404)
+# def ressource_not_found(e):
+#     error="{0}".format(e)
+#     return jsonable_encoder({"result":error}), 404
 
 
 if __name__=='__main__':
