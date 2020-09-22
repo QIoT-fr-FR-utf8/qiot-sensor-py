@@ -22,4 +22,4 @@
 
     COPY . .
 
-    CMD [ "executable" ]
+    CMD [ "sh" ]
