@@ -36,10 +36,12 @@ def json_parsing_return():
 
     d_jsonexport={}
     d_jsonexport['instant']=strftime("%Y-%m-%d %H:%M:%S%Z", gmtime())
+    d_jsonexport['adc']=r_float_value_adc()
     d_jsonexport['nh3']=r_float_value_nh3()
     d_jsonexport['oxidising']=r_float_value_oxidising()
     d_jsonexport['reducing']=r_float_value_reducing()
     
+    PROM_GAS_METRICS['gauge']['adc'].set(d_jsonexport['adc'])
     PROM_GAS_METRICS['gauge']['nh3'].set(d_jsonexport['nh3'])
     PROM_GAS_METRICS['gauge']['oxidising'].set(d_jsonexport['oxidising'])
     PROM_GAS_METRICS['gauge']['reducing'].set(d_jsonexport['reducing'])
