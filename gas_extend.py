@@ -8,28 +8,28 @@ def r_float_value_adc():
     adc = gas.read_adc()
     if isinstance(adc, float):
         return adc
-    return 0
+    return float(0)
 
 
 def r_float_value_nh3():
     nh3 = gas.read_nh3()
     if isinstance(nh3, float):
         return nh3
-    return 0
+    return float(0)
 
 
 def r_float_value_oxidising():
     oxidising = gas.read_oxidising()
     if isinstance(oxidising, float):
         return oxidising
-    return 0
+    return float(0)
 
 
 def r_float_value_reducing():
     reducing = gas.read_reducing()
     if isinstance(reducing, float):
         return reducing
-    return 0
+    return float(0)
 
 
 def json_parsing_return():
